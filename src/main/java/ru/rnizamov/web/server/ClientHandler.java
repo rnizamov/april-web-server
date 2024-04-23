@@ -24,7 +24,6 @@ public class ClientHandler {
                         throw new RuntimeException(e);
                     }
                 }
-                ;
             }
         });
     }

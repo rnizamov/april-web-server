@@ -1,5 +1,7 @@
 package ru.rnizamov.web.server;
 
+import ru.rnizamov.web.server.application.Storage;
+
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -28,6 +30,7 @@ public class HttpServer {
             System.out.println("Сервер запущен на порту: " + port);
             this.dispatcher = new Dispatcher();
             System.out.println("Диспетчер проинициализирован");
+            Storage.init();
             while (true) {
                 Socket socket = serverSocket.accept();
                 new ClientHandler(this, socket);

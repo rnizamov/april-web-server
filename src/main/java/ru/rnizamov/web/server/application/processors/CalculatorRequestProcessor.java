@@ -1,4 +1,4 @@
-package ru.rnizamov.web.server.processors;
+package ru.rnizamov.web.server.application.processors;
 
 import ru.rnizamov.web.server.HttpRequest;
 

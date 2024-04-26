@@ -1,9 +1,10 @@
 package ru.rnizamov.web.server;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 public class Main {
-    // Домашнее задание:
-    // - Основное (с сайта или презентации)
-    // - (*) В случае UnknownOperationRequestProcessor верните статус 404 со страницей NOT FOUND
+    private static final Logger logger = LogManager.getLogger(Main.class.getName());
 
     public static void main(String[] args) {
         new HttpServer(8189).start();

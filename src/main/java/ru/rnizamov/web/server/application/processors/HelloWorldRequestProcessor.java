@@ -1,7 +1,6 @@
-package ru.rnizamov.web.server.processors;
+package ru.rnizamov.web.server.application.processors;
 
 import ru.rnizamov.web.server.HttpRequest;
-
 import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;

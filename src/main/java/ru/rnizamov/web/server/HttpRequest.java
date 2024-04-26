@@ -1,13 +1,24 @@
 package ru.rnizamov.web.server;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class HttpRequest {
+    private static final Logger logger = LogManager.getLogger(HttpRequest.class.getName());
     private String rawRequest;
     private String uri;
     private HttpMethod method;
     private Map<String, String> parameters;
+    private String body;
+
+    public String getRouteKey() {
+        return String.format("%s %s", method, uri);
+    }
 
     public String getUri() {
         return uri;
@@ -17,9 +28,35 @@ public class HttpRequest {
         return parameters.get(key);
     }
 
+    public String getBody() {
+        return body;
+    }
+
     public HttpRequest(String rawRequest) {
         this.rawRequest = rawRequest;
         this.parseRequestLine();
+        this.tryToParseBody();
+    }
+
+    public void tryToParseBody() {
+        if (method != HttpMethod.GET) {
+            logger.debug("HttpMethod не GET");
+            List<String> lines = rawRequest.lines().collect(Collectors.toList());
+            int splitLine = -1;
+            for (int i = 0; i < lines.size(); i++) {
+                if (lines.get(i).isEmpty()) {
+                    splitLine = i;
+                    break;
+                }
+            }
+            if (splitLine > -1) {
+                StringBuilder stringBuilder = new StringBuilder();
+                for (int i = splitLine + 1; i < lines.size(); i++) {
+                    stringBuilder.append(lines.get(i));
+                }
+                this.body = stringBuilder.toString();
+            }
+        }
     }
 
     public void parseRequestLine() {
@@ -41,10 +78,11 @@ public class HttpRequest {
 
     public void info(boolean showRawRequest) {
         if (showRawRequest) {
-            System.out.println(rawRequest);
+            logger.debug(rawRequest);
         }
-        System.out.println("URI: " + uri);
-        System.out.println("HTTP-method: " + method);
-        System.out.println("Parameters: " + parameters);
+        logger.trace("URI: " + uri);
+        logger.trace("HTTP-method: " + method);
+        logger.trace("Parameters: " + parameters);
+        logger.trace("Body: " + body);
     }
 }

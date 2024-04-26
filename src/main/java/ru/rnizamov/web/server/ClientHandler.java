@@ -8,6 +8,7 @@ import java.net.Socket;
 
 public class ClientHandler {
     private static final Logger logger = LogManager.getLogger(ClientHandler.class.getName());
+
     public ClientHandler(HttpServer server, Socket socket) {
         server.getServ().execute(() -> {
             logger.debug("Подключился новый клиент");
@@ -21,16 +22,14 @@ public class ClientHandler {
                     server.getDispatcher().execute(request, socket.getOutputStream());
                 }
             } catch (Exception e) {
-                logger.error("Возникла ошибка при обработке подключившегося клиента");
-                logger.error(e);
+                logger.error("Возникла ошибка при обработке подключившегося клиента", e);
             } finally {
                 if (socket != null) {
                     try {
                         socket.close();
                         logger.debug("Закрытие сокета клиента");
                     } catch (IOException e) {
-                        logger.error("Ошибка при закрытии сокета");
-                        logger.error(e);
+                        logger.error("Ошибка при закрытии сокета", e);
                     }
                 }
             }

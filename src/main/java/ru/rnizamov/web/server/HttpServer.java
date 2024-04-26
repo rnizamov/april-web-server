@@ -39,8 +39,7 @@ public class HttpServer {
                 new ClientHandler(this, socket);
             }
         } catch (IOException e) {
-            logger.fatal("Ошибка при создании ServerSocket");
-            logger.fatal(e);
+            logger.fatal("Ошибка при создании ServerSocket", e);
         }
     }
 }

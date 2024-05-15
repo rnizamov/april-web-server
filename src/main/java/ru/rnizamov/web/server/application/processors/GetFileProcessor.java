@@ -7,7 +7,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
 
-import static ru.rnizamov.web.server.application.filemanager.FileManager.getFileBytes;
+import static ru.rnizamov.web.server.application.filemanager.FileManager.getBytesOfFile;
 
 
 public class GetFileProcessor implements RequestProcessor {
@@ -21,7 +21,7 @@ public class GetFileProcessor implements RequestProcessor {
             firstPart = "HTTP/1.1 200 OK\r\nContent-Type: application/octet-stream\r\n\r\n";
         }
         byte[] firstArr = firstPart.getBytes(StandardCharsets.UTF_8);
-        byte[] fileBytes = getFileBytes(fileName);
+        byte[] fileBytes = getBytesOfFile(fileName);
         byte[] res = new byte[firstArr.length + fileBytes.length];
         System.arraycopy(firstArr, 0, res, 0, firstArr.length);
         System.arraycopy(fileBytes, 0, res, firstArr.length, fileBytes.length);

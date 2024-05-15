@@ -40,7 +40,7 @@ public class FileManager {
         return false;
     }
 
-    public static byte[] getFileBytes(String name) {
+    public static byte[] getBytesOfFile(String name) {
         try (BufferedInputStream in = new BufferedInputStream(new FileInputStream("static/" + name))) {
             return in.readAllBytes();
         } catch (IOException e) {

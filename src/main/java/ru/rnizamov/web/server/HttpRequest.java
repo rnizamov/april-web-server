@@ -17,7 +17,10 @@ public class HttpRequest {
     private String body;
 
     public String getRouteKey() {
-        return String.format("%s %s", method, uri);
+        if (parameters.size() > 0) {
+            return String.format("%s %s" + "?", method, uri);
+        }
+        return  String.format("%s %s", method, uri);
     }
 
     public String getUri() {

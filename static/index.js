@@ -15,11 +15,11 @@ angular.module('app', []).controller('indexController', function ($scope, $http)
             });
     };
 
-    $scope.deleteProductById = function(productId) {
+    $scope.deleteProductById = function (productId) {
         console.log('deleteTest');
         $http({
-        //    url: contextPath + '/products/' + productId,
-            url: contextPath + '/items?id=' + productId,
+            url: contextPath + '/items/' + productId,
+            // url: contextPath + '/items?id=' + productId,
             method: "DELETE"
         }).then(function (response) {
             $scope.fillTable();

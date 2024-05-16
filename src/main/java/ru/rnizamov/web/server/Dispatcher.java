@@ -23,8 +23,10 @@ public class Dispatcher {
     public Dispatcher() {
         this.router = new HashMap<>();
         this.router.put("GET /items", new GetAllProductsProcessor());
-        this.router.put("GET /items?", new GetProductByIdRequestProcessor());
-        this.router.put("DELETE /items?", new DeleteProductByIdRequestProcessor());
+        this.router.put("GET /items?", new GetProductByParamIdRequestProcessor());
+        this.router.put("GET /items/", new GetProductByPathIdRequestProcessor());
+        this.router.put("DELETE /items?", new DeleteProductByParamIdRequestProcessor());
+        this.router.put("DELETE /items/", new DeleteProductByPathIdRequestProcessor());
         this.router.put("POST /items", new CreateNewProductProcessor());
         this.router.put("PUT /items", new UpdateProductProcessor());
         this.unknownOperationRequestProcessor = new UnknownOperationRequestProcessor();

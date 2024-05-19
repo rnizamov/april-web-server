@@ -1,10 +1,8 @@
 package ru.rnizamov.web.server;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import ru.rnizamov.web.server.application.DataBaseProductService;
 import ru.rnizamov.web.server.application.ProductService;
-
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -56,7 +54,9 @@ public class HttpServer {
         } catch (SQLException e) {
             logger.fatal("Ошибка при подключении к ProductService", e);
         } finally {
-            productService.close();
+            if (productService != null) {
+                productService.close();
+            }
         }
     }
 }

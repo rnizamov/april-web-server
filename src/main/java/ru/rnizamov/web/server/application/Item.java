@@ -1,17 +1,15 @@
 package ru.rnizamov.web.server.application;
 
-import java.util.UUID;
-
 public class Item {
-    private UUID id;
+    private int id;
     private String title;
     private int price;
 
-    public UUID getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(UUID id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -31,11 +29,12 @@ public class Item {
         this.price = price;
     }
 
-    public Item() {
+    public Item(String title, int price, int id) {
+        this(title, price);
+        this.id = id;
     }
 
     public Item(String title, int price) {
-        this.id = UUID.randomUUID();
         this.title = title;
         this.price = price;
     }

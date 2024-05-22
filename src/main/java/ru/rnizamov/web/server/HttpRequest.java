@@ -3,6 +3,7 @@ package ru.rnizamov.web.server;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -14,9 +15,16 @@ public class HttpRequest {
     private String uri;
     private HttpMethod method;
     private Map<String, String> parameters;
+    private Map<String, String> pathVariable;
     private String body;
 
     public String getRouteKey() {
+        if (parameters.size() > 0) {
+            return String.format("%s %s" + "?", method, uri);
+        }
+        if (pathVariable.size() > 0) {
+            return String.format("%s %s" + "/", method, uri);
+        }
         return String.format("%s %s", method, uri);
     }
 
@@ -26,6 +34,10 @@ public class HttpRequest {
 
     public String getParameter(String key) {
         return parameters.get(key);
+    }
+
+    public String getPathVariable() {
+        return pathVariable.get("pathVariable");
     }
 
     public String getBody() {
@@ -65,6 +77,8 @@ public class HttpRequest {
         this.uri = rawRequest.substring(startIndex + 1, endIndex);
         this.method = HttpMethod.valueOf(rawRequest.substring(0, startIndex));
         this.parameters = new HashMap<>();
+        this.pathVariable = new HashMap<>();
+        String[] pathVar = uri.split("/");
         if (uri.contains("?")) {
             String[] elements = uri.split("[?]");
             this.uri = elements[0];
@@ -73,6 +87,10 @@ public class HttpRequest {
                 String[] keyValue = o.split("=");
                 this.parameters.put(keyValue[0], keyValue[1]);
             }
+        }
+        if (pathVar.length > 2) {
+            this.uri = "/" + pathVar[1];
+            pathVariable.put("pathVariable", pathVar[2]);
         }
     }
 
@@ -83,6 +101,7 @@ public class HttpRequest {
         logger.trace("URI: " + uri);
         logger.trace("HTTP-method: " + method);
         logger.trace("Parameters: " + parameters);
+        logger.trace("PathVariable: " + pathVariable);
         logger.trace("Body: " + body);
     }
 }

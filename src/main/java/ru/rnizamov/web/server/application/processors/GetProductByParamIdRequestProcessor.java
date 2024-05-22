@@ -10,15 +10,13 @@ import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
 import java.sql.SQLException;
 
-public class CreateNewProductProcessor implements RequestProcessor {
+public class GetProductByParamIdRequestProcessor implements RequestProcessor {
     @Override
     public void execute(HttpRequest httpRequest, OutputStream output, ProductService productService) throws IOException, SQLException {
+        int id = Integer.parseInt(httpRequest.getParameter("id"));
+        Item item = productService.getItemById(id);
         Gson gson = new Gson();
-        Item item = gson.fromJson(httpRequest.getBody(), Item.class);
-        productService.save(item);
-        String jsonOutItem = gson.toJson(productService.getItemByTitle(item.getTitle()));
-
-        String response = "HTTP/1.1 200 OK\r\nContent-Type: application/json\r\n\r\n" + jsonOutItem;
-        output.write(response.getBytes(StandardCharsets.UTF_8));
+        String result = "HTTP/1.1 200 OK\r\nContent-Type: application/json\r\n\r\n" + gson.toJson(item);
+        output.write(result.getBytes(StandardCharsets.UTF_8));
     }
 }

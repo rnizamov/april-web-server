@@ -1,13 +1,10 @@
 package ru.rnizamov.web.server.application.processors;
-
 import ru.rnizamov.web.server.HttpRequest;
 import ru.rnizamov.web.server.application.ProductService;
-
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
-
-import static ru.rnizamov.web.server.application.filemanager.FileManager.getBytesOfFile;
 
 
 public class GetFileProcessor implements RequestProcessor {
@@ -20,11 +17,14 @@ public class GetFileProcessor implements RequestProcessor {
         } else {
             firstPart = "HTTP/1.1 200 OK\r\nContent-Type: application/octet-stream\r\n\r\n";
         }
-        byte[] firstArr = firstPart.getBytes(StandardCharsets.UTF_8);
-        byte[] fileBytes = getBytesOfFile(fileName);
-        byte[] res = new byte[firstArr.length + fileBytes.length];
-        System.arraycopy(firstArr, 0, res, 0, firstArr.length);
-        System.arraycopy(fileBytes, 0, res, firstArr.length, fileBytes.length);
-        output.write(res);
+        output.write(firstPart.getBytes(StandardCharsets.UTF_8));
+        try (FileInputStream in = new FileInputStream("static/" + fileName)) {
+            byte[] buf = new byte[8192];
+            int n = in.read(buf);
+            while (n > 0) {
+                output.write(buf, 0, n);
+                n = in.read(buf);
+            }
+        }
     }
 }

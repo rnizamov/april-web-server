@@ -21,7 +21,7 @@ public class ClientHandler {
                 if (n > 0) {
                     String rawRequest = new String(buffer, 0, n, StandardCharsets.UTF_8);
                     request = new HttpRequest(rawRequest);
-                    request.info(true);
+                    request.info();
                     server.getDispatcher().execute(request, socket.getOutputStream(), server.getProductService());
                 }
             } catch (Exception e) {

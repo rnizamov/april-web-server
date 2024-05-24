@@ -34,6 +34,7 @@ public class Dispatcher {
         this.router.put("NotFoundException", new NotFoundRequestProcessor());
         this.router.put("PSQLException", new DatabaseErrorRequestProcessor());
         this.router.put("FileProcessor", new GetFileProcessor());
+        this.router.put("POST /file", new AddFileProcessor());
     }
 
     public void execute(HttpRequest httpRequest, OutputStream outputStream, ProductService productService) throws IOException, SQLException, NotFoundException {

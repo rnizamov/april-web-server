@@ -94,10 +94,9 @@ public class HttpRequest {
         }
     }
 
-    public void info(boolean showRawRequest) {
-        if (showRawRequest) {
-            logger.debug(rawRequest);
-        }
+    public void info() {
+        logger.trace(rawRequest);
+
         logger.trace("URI: " + uri);
         logger.trace("HTTP-method: " + method);
         logger.trace("Parameters: " + parameters);
